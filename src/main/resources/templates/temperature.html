@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <h1>Unit converter</h1>
+    </div>
+    <div id="links">
+        <a href="/length">Length</a>
+        <a href="/temperature" class="active">Temperature</a>
+        <a href="/weight">Weight</a>
+    </div>
+
+    <script>
+        document.querySelectorAll('#links a').forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+
+    <style>
+        .active {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+    <div id="result" th:if="${message}" style="color: green; border: 1px solid green; padding: 10px; width: fit-content;">
+        <h3>Results of your calculations</h3>
+        <p th:text="${message}"></p>
+        <button style="font-size: large" id="resetButton" type="button">Reset</button>
+
+        <script type="text/javascript">
+            document.getElementById("resetButton").onclick = function () {
+                location.href = "/temperature";
+            };
+        </script>
+    </div>
+
+    <div id="form" th:unless="${message}">
+        <form th:action="@{/submitTemperature}" th:object="${temperature}" method="post">
+            <label>Enter the length to convert </label>
+            <label>
+                <input type="text" th:field="*{value}" required />
+            </label><br/><br/>
+
+            <label>Unit to convert from </label>
+            <label>
+                <select th:field="*{from}">
+                    <option th:each="unit : ${units}" th:value="${unit}" th:text="${unit}"></option>
+                </select>
+            </label>
+            <br/><br/>
+
+            <label>Unit to convert to </label>
+            <label>
+                <select th:field="*{to}">
+                    <option th:each="unit : ${units}" th:value="${unit}" th:text="${unit}"></option>
+                </select>
+            </label>
+            <br/><br/>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

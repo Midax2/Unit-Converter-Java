@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <h1>Unit converter</h1>
+    </div>
+    <div id="links">
+        <a href="/length" class="active">Length</a>
+        <a href="/temperature">Temperature</a>
+        <a href="/weight">Weight</a>
+    </div>
+
+    <script>
+        document.querySelectorAll('#links a').forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+
+    <style>
+        .active {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+    <div id="result" th:if="${message}">
+        <!-- Success message -->
+        <p th:text="${message}"></p>
+        <button style="font-size: large" id="resetButton" type="button">Reset</button>
+
+        <script type="text/javascript">
+            document.getElementById("resetButton").onclick = function () {
+                location.href = "/length";
+            };
+        </script>
+    </div>
+
+    <div id="form" th:unless="${message}">
+        <form th:action="@{/submitForm}" th:object="${user}" method="post">
+            <label>Enter the length to convert: </label>
+
+            <label>Unit to convert from: </label>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+
+</body>
+</html>
